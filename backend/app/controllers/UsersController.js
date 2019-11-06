@@ -28,11 +28,10 @@ exports.createUser = async (req,res) => {
 }
 
 exports.updateUser = async (req,res) => {
-    const { password ,name , age  } = req.body 
+    const {username, name , age  } = req.body 
     const user_id = req.params.id
-    const passwordNew = bcrypt.hashSync(password , 10)
     await DB.from('users').update({
-        password: passwordNew,
+        username,
         age,
         name
     }).where('id' , user_id)

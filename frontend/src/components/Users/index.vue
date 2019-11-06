@@ -1,6 +1,40 @@
 <template>
     <div>
         <h1>Users List Page</h1>
+
+        <table class="table table-hover table-striped">
+            <thead>
+                <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Username</th>
+                <th scope="col">Age</th>
+                <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(user, index) in users" :key="user.id">
+                    <th scope="row">{{ ++index }}</th>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.age }}</td>
+                    <td>
+                        <router-link class="btn btn-outline-warning" :to="{
+                            name: 'users-view',
+                            params:{ id: user.id }
+                        }">view</router-link>
+
+                        <router-link class="btn btn-outline-info" :to="{
+                            name: 'users-edit',
+                            params:{ id: user.id }
+                        }">edit</router-link>
+
+                        <button type="button" v-on:click="deleteUser( user.id )" class="btn btn-outline-danger" >delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
     </div>
 </template>
 
@@ -15,9 +49,8 @@ export default {
         };
     },
     methods: {
-        retrieveUsers() {
-            api
-                .get("/users")
+        getAllUsers() {
+            api.get("/users")
                 .then(res => {
                     this.users = res.data.data; 
                     console.log(res)
@@ -27,11 +60,23 @@ export default {
                 });
         },
         refreshList() {
-            this.retrieveUsers();
+            this.getAllUsers();
+        },
+        deleteUser(user_id){
+            // console.log(user_id)
+            api.delete("/users/deleteUser/"+user_id)
+                .then(res => {
+                    // this.users = res.data.data; 
+                    console.log(res.data)
+                    this.getAllUsers();
+                })
+                .catch(e => {
+                    console.log(e);
+                });
         }
     },
     mounted() {
-        this.retrieveUsers();
+        this.getAllUsers();
     }
 }
 </script>

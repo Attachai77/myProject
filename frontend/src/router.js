@@ -29,7 +29,7 @@ export default new Router({
             props: true
         },
         {
-            path: "/users/edit",
+            path: "/users/edit/:id",
             name: "users-edit",
             component: EditUser,
             props: true
