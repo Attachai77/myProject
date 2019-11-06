@@ -2,13 +2,13 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png">
 
-    <nav>
-        <router-link class="btn btn-primary" to="/">Home</router-link><br>
-        <router-link class="btn btn-primary" to="/users">user list</router-link><br>
-        <router-link class="btn btn-primary" to="/users/create">create user</router-link><br>
-        <router-link class="btn btn-primary" to="/users/view/1">view user</router-link><br>
-        <router-link class="btn btn-primary" to="/users/edit">edit user</router-link><br>
-    </nav>
+    <div>
+        <router-link class="btn btn-outline-primary" to="/">Home</router-link>
+        <router-link class="btn btn-outline-secondary" to="/users">user list</router-link>
+        <router-link class="btn btn-outline-success" to="/users/create">create user</router-link>
+        <router-link class="btn btn-outline-warning" to="/users/view/1">view user</router-link>
+        <router-link class="btn btn-outline-info" to="/users/edit">edit user</router-link>
+    </div>
 
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <router-view></router-view>
