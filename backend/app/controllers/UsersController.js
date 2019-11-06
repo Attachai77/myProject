@@ -1,7 +1,10 @@
 const DB = require('../config/db')
 const bcrypt = require('bcrypt')
 
+const Auth = require('./AuthController')
+
 exports.index = async (req,res) => {
+
     const users = await DB.from('users').select('*')
     return res.json({
         'status':200,

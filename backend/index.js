@@ -2,16 +2,28 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const route = require('./app/route/route')
 
+// const verifyToken = require('./app/controllers/AuthController').verifyToken()
+
 const app = express()
 app.use(bodyParser())
+
+app.use((req, res, next) => {
+    // res.header("Access-Control-Allow-Origin", "*"); 
+    res.header("Access-Control-Allow-Origin", "http://localhost:4200"); 
+    res.header("Access-Control-Allow-Origin", "http://192.168.93.17:4200"); 
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 app.use((req,res,next)=>{
     console.log("start");
     next()
 })
 
+// app.use(verifyToken)
+
 app.use("/api",route)
 
-app.listen(3000,()=>{
+app.listen(8080,()=>{
     console.log("running...");
 })
