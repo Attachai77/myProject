@@ -15,12 +15,14 @@ exports.index = async (req,res) => {
 exports.createUser = async (req,res) => {
     const { username , password ,name , age  } = req.body 
     const passwordNew = bcrypt.hashSync(password , 10)
-    await DB.from('users').insert({
+    const data = {
         username,
         password: passwordNew,
-        age,
         name
-    })
+    }
+    if(age) data.age = age
+    
+    await DB.from('users').insert(data)
     return res.json({
         'success':true,
         'status':200

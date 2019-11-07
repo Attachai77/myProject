@@ -3,11 +3,16 @@
     <img alt="Vue logo" src="./assets/logo.png">
 
     <div>
-        <router-link class="btn btn-outline-primary" to="/">Home</router-link>
-        <router-link class="btn btn-outline-secondary" to="/users">user list</router-link>
-        <router-link class="btn btn-outline-success" to="/users/create">create user</router-link>
-        <router-link class="btn btn-outline-warning" to="/users/view/1">view user</router-link>
-        <router-link class="btn btn-outline-info" to="/users/edit">edit user</router-link>
+        <router-link class="btn btn-outline-primary" to="/">
+          <i class="fa fa-home"></i> Home
+        </router-link>
+        <router-link class="btn btn-outline-secondary" to="/users">
+          <vue-fontawesome icon="users" size="1" color="red"></vue-fontawesome> user list
+        </router-link>
+        <router-link class="btn btn-outline-success" to="/users/create">
+          <vue-fontawesome icon="plus"></vue-fontawesome> create user
+        </router-link>
+        <router-link class="btn btn-outline-danger" to="/validateDemo">Validate Demo</router-link>
     </div><br>
 
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
