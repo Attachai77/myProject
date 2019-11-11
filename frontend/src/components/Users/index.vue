@@ -53,10 +53,10 @@ export default {
             api.get("/users")
                 .then(res => {
                     this.users = res.data.data; 
-                    console.log(res)
+                    // console.log(res)
                 })
                 .catch(e => {
-                    console.log(e);
+                    // console.log(e);
                 });
         },
         refreshList() {
@@ -67,11 +67,11 @@ export default {
             api.delete("/users/deleteUser/"+user_id)
                 .then(res => {
                     // this.users = res.data.data; 
-                    console.log(res.data)
+                    // console.log(res.data)
                     this.getAllUsers();
                 })
                 .catch(e => {
-                    console.log(e);
+                    // console.log(e);
                 });
         }
     },

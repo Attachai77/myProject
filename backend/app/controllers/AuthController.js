@@ -8,6 +8,7 @@ exports.login = async (req,res) => {
 
     if(!user){
         return res.json({
+            sucess:false,
             status: 200,
             message: "Incorect username or password"
         })
@@ -16,6 +17,7 @@ exports.login = async (req,res) => {
     const compare = bcrypt.compareSync(password, user.password)
     if (!compare) {
         return res.json({
+            sucess:false,
             status: 401,
             message: "Incorect username or password"
         }).status(401)

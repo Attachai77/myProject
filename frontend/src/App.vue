@@ -1,5 +1,15 @@
 <template>
   <div id="app" class="container">
+
+    <div v-if="loggedIn">
+      Login : {{ user_fullname }} 
+      <button v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
+    </div>
+
+    <div v-if="!loggedIn">
+      <router-link to="/login" class="btn btn-sm btn-info">login</router-link>
+    </div>
+
     <img alt="Vue logo" src="./assets/logo.png">
 
     <div>
@@ -28,7 +38,20 @@ export default {
   name: 'app',
   // components: {
   //   HelloWorld
-  // }
+  // }ม
+  data () {
+      return {
+          user_fullname: 'The superheros',
+          loggedIn: localStorage.getItem('token') != null,
+      }
+  },
+  methods: {
+    logout(){
+      localStorage.clear(); 
+      alert("Logout success")
+      this.$router.push('login')
+    }
+  },
 }
 </script>
 

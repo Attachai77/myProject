@@ -30,13 +30,13 @@ exports.createUser = async (req,res) => {
 }
 
 exports.updateUser = async (req,res) => {
-    const {username, name , age  } = req.body 
+    const {name , age  } = req.body 
     const user_id = req.params.id
-    await DB.from('users').update({
-        username,
-        age,
-        name
-    }).where('id' , user_id)
+
+    const data = { name }
+    if(age) data.age = age
+
+    await DB.from('users').update(data).where('id' , user_id)
 
     return res.json({
         'status':200,
