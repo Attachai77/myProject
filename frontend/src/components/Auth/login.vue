@@ -14,7 +14,7 @@
                                 </div>
                             </div>
                             <div class="form-label-group text-left">
-                                <input type="text" id="password" v-model="user.password" class="form-control" :class="{ 'is-invalid': submitted && $v.user.password.$error }" placeholder="Password" >
+                                <input type="password" id="password" v-model="user.password" class="form-control" :class="{ 'is-invalid': submitted && $v.user.password.$error }" placeholder="Password" >
                                 <label for="password">Password</label>
                                 <div v-if="submitted && $v.user.password.$error" class="invalid-feedback">
                                     <span v-if="!$v.user.password.required">Password is required</span>
@@ -66,36 +66,36 @@
                   username: this.user.username,
                   password: this.user.password
                 }
-                
-                api.post("/auth/login", data)
-                    .then(res => {
-                        console.log(res.data);
-                        // this.$router.push('/users');
-                        const response = res.data;
-                        if (response.sucess) {
 
-                          localStorage.setItem('user',JSON.stringify(response.user));
-                          localStorage.setItem('token',response.token);
+                this.$store.dispatch('login', data)
+                  .then((res) => {
+                    // console.log(res);
+                    const response = res.data;
 
-                          alert("Login success")
+                      this.$message({
+                        message: "Login successfully",
+                        type: 'success',
+                        showClose: true,
+                        position: 'top-right',
+                        duration: 5000
+                      })
 
-                          this.$emit('loggedIn')
-                          if(this.$route.params.nextUrl != null){
-                              this.$router.push(this.$route.params.nextUrl)
-                          }
-                          this.$router.push('users')
+                      if(this.$route.params.nextUrl != null){
+                          this.$router.push(this.$route.params.nextUrl)
+                      }
+                      this.$router.push('users')
 
-                        }else{
-
-                          console.log("Login failed");
-                          alert("Login failed")
-
-                        }
-
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
+                    
+                  } )
+                  .catch((err) => {
+                    this.$message({
+                        message: err.response.data.message,
+                        type: 'error',
+                        showClose: true,
+                        position: 'top-right',
+                        duration: 5000
+                      })
+                  })
             }
         }
     };

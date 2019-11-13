@@ -14,6 +14,16 @@ exports.index = async (req,res) => {
 
 exports.createUser = async (req,res) => {
     const { username , password ,name , age  } = req.body 
+
+    const user = await DB.from('users').select('*').where('username', username)
+    if(user){
+        return res.json({
+            'success':false,
+            'status':200,
+            'message': 'Username already taken. '
+        })
+    }
+
     const passwordNew = bcrypt.hashSync(password , 10)
     const data = {
         username,

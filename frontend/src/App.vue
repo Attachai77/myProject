@@ -1,14 +1,13 @@
 <template>
   <div id="app" class="container">
+    
+      <div>
+        isLoggedIn : {{ isLoggedIn }}
+        
+      <button v-if="isLoggedIn" v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
+      <router-link v-if="!isLoggedIn" to="/login" class="btn btn-sm btn-info">login</router-link>
+      </div>
 
-    <div v-if="loggedIn">
-      Login : {{ user_fullname }} 
-      <button v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
-    </div>
-
-    <div v-if="!loggedIn">
-      <router-link to="/login" class="btn btn-sm btn-info">login</router-link>
-    </div>
 
     <img alt="Vue logo" src="./assets/logo.png">
 
@@ -33,6 +32,8 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
+import axios from "axios";
+import { mapGetters , mapState , mapActions } from 'vuex'
 
 export default {
   name: 'app',
@@ -41,17 +42,54 @@ export default {
   // }ม
   data () {
       return {
+          authenticated: false,
+          loggedIn: false,
           user_fullname: 'The superheros',
-          loggedIn: localStorage.getItem('token') != null,
+          loggedIn2: localStorage.getItem('token') != null,
+          current_route: this.$router.currentRoute,
       }
   },
   methods: {
     logout(){
-      localStorage.clear(); 
-      alert("Logout success")
-      this.$router.push('login')
+      this.$store.dispatch("logout").then(() => {
+        this.$router.push("login");
+      });
+    },
+    setAuthenticated(status) {
+        this.authenticated = status;
+    },
+  },
+  computed: {
+    ...mapGetters({
+      fullName: 'name/fullName',
+    }),
+    ...mapState({
+      currentCounter: store => store.counter.currentCounter
+    }),
+    ...mapActions({
+      increaseCounter: 'counter/increaseCounter'
+    }),
+    isLoggedIn: function() {
+      return this.$store.getters.isLoggedIn;
     }
   },
+  beforeCreate() {
+    //console.log('beforeCreate (App): Nothing gets called before me!')
+  },
+  created: function () {
+
+  },
+  beforeMount() {
+    // console.log(`tbeforeMount (App): his.$el doesn't exist yet, but it will soon!`)
+  },
+  mounted() {
+    //console.log('mounted (App): ') // I'm text inside the component.
+    if(!this.authenticated) {
+      console.log("No authenticated");
+    }else{
+      console.log("Authenticated");
+    }
+  }
 }
 </script>
 

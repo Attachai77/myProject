@@ -4,9 +4,12 @@ const jwt = require('jsonwebtoken')
 
 exports.login = async (req,res) => {
     const { username , password } = req.body
+    console.log(req.body);
+    
     const user  = await DB.from('users').select('*').where('username', username).first()
 
     if(!user){
+        res.status(401)
         return res.json({
             sucess:false,
             status: 200,
@@ -16,11 +19,12 @@ exports.login = async (req,res) => {
 
     const compare = bcrypt.compareSync(password, user.password)
     if (!compare) {
+        res.status(401)
         return res.json({
             sucess:false,
             status: 401,
             message: "Incorect username or password"
-        }).status(401)
+        })
     }
 
     req.token = jwt.sign( {
@@ -28,7 +32,7 @@ exports.login = async (req,res) => {
     },
     'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm'
     ,{
-        expiresIn:'1d'
+        expiresIn:'5000'
     })
 
     delete user.password
@@ -44,9 +48,12 @@ exports.login = async (req,res) => {
 
 exports.verifyToken = () => async (req , res , next ) => {
     const { token } = req.headers
+    console.log(req.headers);
+    
     jwt.verify(token , 'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm' , (err, decode) => {
         if (err) {
-            res.json({
+            res.status(401)
+            .json({
                 status:401,
                 message:"token invalid or token expired"
             })

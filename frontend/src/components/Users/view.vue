@@ -29,14 +29,23 @@ export default {
     },
     methods: {
         getUser(){
+
             api.get("/users/getUserById/"+this.id)
-                .then(res => {
-                    this.user = res.data.data; 
-                    console.log(res)
-                })
-                .catch(e => {
-                    console.log(e);
-                });
+            .then(res => {
+                this.user = res.data.data; 
+            })
+            .catch(e => {
+                // if (e.response.data.status == 401) {
+                //     this.$message({
+                //         message: e.response.data.message,
+                //         type: 'error',
+                //         position: 'top',
+                //     })
+                //     localStorage.clear(); 
+                //     this.$router.push('login')
+                // }
+            });
+
         }
     },
     mounted() {

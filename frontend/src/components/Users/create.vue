@@ -21,6 +21,9 @@
                     <div v-if="!$v.user.username.minLength || !$v.user.username.maxLength" class="invalid-feedback">
                         Username must has between {{$v.user.username.$params.minLength.min}} - {{$v.user.username.$params.maxLength.max}}  characters.
                     </div>
+                    <div v-if="username_already_taken" class="invalid-feedback">
+                        Username already taken.
+                    </div>
                 </div>
             </div>
 
@@ -78,7 +81,8 @@ export default {
                 password:'',
                 age:'',
                 confirm_password:''
-            }
+            },
+            username_already_taken: false
         }
     },
     methods: {
@@ -100,8 +104,11 @@ export default {
             
             api.post("/users/createUser", data)
                 .then(res => {
-                    console.log(res.data);
-                    this.$router.push('/users');
+                    if (res.data.success) {
+                        this.$router.push('/users');
+                    }else{
+                        alert(res.data.message);
+                    }
                 })
                 .catch(e => {
                     console.log(e);
