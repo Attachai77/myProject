@@ -42,10 +42,6 @@ export default {
   // }ม
   data () {
       return {
-          authenticated: false,
-          loggedIn: false,
-          user_fullname: 'The superheros',
-          loggedIn2: localStorage.getItem('token') != null,
           current_route: this.$router.currentRoute,
       }
   },
@@ -54,10 +50,7 @@ export default {
       this.$store.dispatch("logout").then(() => {
         this.$router.push("login");
       });
-    },
-    setAuthenticated(status) {
-        this.authenticated = status;
-    },
+    }
   },
   computed: {
     ...mapGetters({
@@ -84,11 +77,6 @@ export default {
   },
   mounted() {
     //console.log('mounted (App): ') // I'm text inside the component.
-    if(!this.authenticated) {
-      console.log("No authenticated");
-    }else{
-      console.log("Authenticated");
-    }
   }
 }
 </script>

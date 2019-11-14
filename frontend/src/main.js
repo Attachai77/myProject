@@ -6,7 +6,7 @@ import store from './store'
 import Vuelidate from 'vuelidate'
 import Message from 'vue-m-message'
 
-import Axios from "axios";
+import api from "./http-common";
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
@@ -16,9 +16,9 @@ import "font-awesome/css/font-awesome.min.css";
 Vue.config.productionTip = false
 Vue.config.devtools = false;
 
-Vue.prototype.$http = Axios;
+
 const token = localStorage.getItem('token')
-if (token) Vue.prototype.$http.defaults.headers.common['Authorization'] = token
+if (token) api.defaults.headers.common['token'] = token
 
 Vue.use(Vuelidate)
 Vue.use(Message)

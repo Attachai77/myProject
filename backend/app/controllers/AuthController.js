@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken')
 
 exports.login = async (req,res) => {
     const { username , password } = req.body
-    console.log(req.body);
+    // console.log(req.body);
     
     const user  = await DB.from('users').select('*').where('username', username).first()
 
@@ -32,7 +32,8 @@ exports.login = async (req,res) => {
     },
     'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm'
     ,{
-        expiresIn:'5000'
+        // expiresIn:'1d'
+        expiresIn:30
     })
 
     delete user.password
@@ -48,7 +49,6 @@ exports.login = async (req,res) => {
 
 exports.verifyToken = () => async (req , res , next ) => {
     const { token } = req.headers
-    console.log(req.headers);
     
     jwt.verify(token , 'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm' , (err, decode) => {
         if (err) {
