@@ -1,5 +1,6 @@
 const DB = require('../config/db')
 const bcrypt = require('bcrypt')
+const _ = require('lodash')
 
 const Auth = require('./AuthController')
 
@@ -14,9 +15,10 @@ exports.index = async (req,res) => {
 
 exports.createUser = async (req,res) => {
     const { username , password ,name , age  } = req.body 
-
+    
     const user = await DB.from('users').select('*').where('username', username)
-    if(user){
+    
+    if(!_.isEmpty(user)){
         return res.json({
             'success':false,
             'status':200,

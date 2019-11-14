@@ -55,7 +55,14 @@ export default {
                     // console.log(res)
                 })
                 .catch(e => {
-                    console.log(e);
+                    if (e.response.data.status == 401) {
+                        this.$message({
+                            message: e.response.data.message,
+                            type: 'error',
+                            position: 'top-right',
+                        })
+                        this.$parent.logout();
+                    }
                 });
         },
         updateUser(){
@@ -69,8 +76,6 @@ export default {
                 name: this.user.name,
                 age: this.user.age
             }
-
-            console.log(data)
             
             api.patch("/users/updateUser/"+this.id, data)
                 .then(res => {
@@ -78,13 +83,19 @@ export default {
                     this.$router.push('/users');
                 })
                 .catch(e => {
-                    console.log(e);
+                    if (e.response.data.status == 401) {
+                        this.$message({
+                            message: e.response.data.message,
+                            type: 'error',
+                            position: 'top',
+                        })
+                        localStorage.clear(); 
+                        this.$router.push('login')
+                    }
                 });
         }
     },
     mounted() {
-        console.log(this.id);
-        
         this.getUserData()
     },
     validations: {

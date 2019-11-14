@@ -26,13 +26,18 @@ let router = new Router({
 });
 
 router.beforeEach((to, from, next) => {
+    // console.log(to);
 
     if (to.matched.some(record => record.meta.requiresAuth)) {
+        
 
         if (store.getters.isLoggedIn) {
+            // console.log("1: isLoggedIn");
+            
             next()
             return
         }
+        // console.log("2: redirect login");
         next('login')
 
     } else if(to.matched.some(record => record.meta.guest)) {

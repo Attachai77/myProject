@@ -3,6 +3,7 @@
     
       <div>
         isLoggedIn : {{ isLoggedIn }}
+        <h5 v-if="isLoggedIn">Logged In with : {{ Auth.name }} </h5>
         
       <button v-if="isLoggedIn" v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
       <router-link v-if="!isLoggedIn" to="/login" class="btn btn-sm btn-info">login</router-link>
@@ -32,6 +33,7 @@
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
+import api from "./http-common";
 import axios from "axios";
 import { mapGetters , mapState , mapActions } from 'vuex'
 
@@ -48,13 +50,13 @@ export default {
   methods: {
     logout(){
       this.$store.dispatch("logout").then(() => {
-        this.$router.push("login");
+        this.$router.push("/login");
       });
     }
   },
   computed: {
     ...mapGetters({
-      fullName: 'name/fullName',
+      fullName: 'name/fullName'
     }),
     ...mapState({
       currentCounter: store => store.counter.currentCounter
@@ -64,13 +66,20 @@ export default {
     }),
     isLoggedIn: function() {
       return this.$store.getters.isLoggedIn;
+    },
+    Auth: function() {
+      return this.$store.getters.Auth;
     }
   },
   beforeCreate() {
     //console.log('beforeCreate (App): Nothing gets called before me!')
   },
   created: function () {
-
+      // api.interceptors.response.use(function (response) {
+      //   return response
+      // }, function (err) {
+      //   console.log(err);
+      // });
   },
   beforeMount() {
     // console.log(`tbeforeMount (App): his.$el doesn't exist yet, but it will soon!`)

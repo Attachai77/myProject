@@ -66,12 +66,17 @@ export default {
             // console.log(user_id)
             api.delete("/users/deleteUser/"+user_id)
                 .then(res => {
-                    // this.users = res.data.data; 
-                    // console.log(res.data)
                     this.getAllUsers();
                 })
                 .catch(e => {
-                    // console.log(e);
+                    if (e.response.data.status == 401) {
+                        this.$message({
+                            message: e.response.data.message,
+                            type: 'error',
+                            position: 'top-right',
+                        })
+                        this.$parent.logout();
+                    }
                 });
         }
     },

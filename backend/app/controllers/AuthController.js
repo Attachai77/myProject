@@ -33,7 +33,7 @@ exports.login = async (req,res) => {
     'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm'
     ,{
         // expiresIn:'1d'
-        expiresIn:30
+        expiresIn:10
     })
 
     delete user.password

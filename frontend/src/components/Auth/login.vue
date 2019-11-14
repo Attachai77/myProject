@@ -75,9 +75,7 @@
                       this.$message({
                         message: "Login successfully",
                         type: 'success',
-                        showClose: true,
-                        position: 'top-right',
-                        duration: 5000
+                        position: 'top-right'
                       })
 
                       if(this.$route.params.nextUrl != null){
@@ -88,6 +86,7 @@
                     
                   } )
                   .catch((err) => {
+                    
                     this.$message({
                         message: err.response.data.message,
                         type: 'error',

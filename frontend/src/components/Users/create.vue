@@ -88,13 +88,13 @@ export default {
     methods: {
         createUser(){
             this.$v.$touch();
-            console.log(this.$v.user);
+            // console.log(this.$v.user);
             
             if (this.$v.$invalid) {
                 return;
             }
             
-            console.log(this.user)
+            // console.log(this.user)
             const data = {
                 name: this.user.name,
                 username: this.user.username,
@@ -105,13 +105,30 @@ export default {
             api.post("/users/createUser", data)
                 .then(res => {
                     if (res.data.success) {
-                        this.$router.push('/users');
+                        this.$message({
+                            message: res.data.message,
+                            type: 'success',
+                            position: 'top-right'
+                        })
+                        this.$router.push('/users')
                     }else{
-                        alert(res.data.message);
+                        this.$message({
+                            message: res.data.message,
+                            type: 'error',
+                            position: 'top-right'
+                        })
                     }
                 })
                 .catch(e => {
-                    console.log(e);
+                    if (e.response.data.status == 401) {
+                        this.$message({
+                            message: e.response.data.message,
+                            type: 'error',
+                            position: 'top',
+                        })
+                        localStorage.clear(); 
+                        this.$router.push('login')
+                    }
                 });
         }
     },

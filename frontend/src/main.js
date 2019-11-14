@@ -32,8 +32,3 @@ new Vue({
     render: h => h(App)
 }).$mount('#app')
 
-
-
-// Vue.config.errorHandler = function(err, vm, info) {
-//   console.log(`Error: ${err.toString()}\nInfo: ${info}`);
-// }

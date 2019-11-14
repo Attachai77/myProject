@@ -35,15 +35,15 @@ export default {
                 this.user = res.data.data; 
             })
             .catch(e => {
-                // if (e.response.data.status == 401) {
-                //     this.$message({
-                //         message: e.response.data.message,
-                //         type: 'error',
-                //         position: 'top',
-                //     })
-                //     localStorage.clear(); 
-                //     this.$router.push('login')
-                // }
+                
+                if (e.response.data.status == 401) {
+                    this.$message({
+                        message: e.response.data.message,
+                        type: 'error',
+                        position: 'top-right',
+                    })
+                    this.$parent.logout();
+                }
             });
 
         }
