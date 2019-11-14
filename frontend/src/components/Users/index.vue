@@ -66,6 +66,11 @@ export default {
             // console.log(user_id)
             api.delete("/users/deleteUser/"+user_id)
                 .then(res => {
+                    this.$message({
+                        message: res.data.message,
+                        type: 'success',
+                        position: 'top-right',
+                    })
                     this.getAllUsers();
                 })
                 .catch(e => {

@@ -61,7 +61,8 @@ exports.deleteUser = async (req,res) => {
     await DB.from('users').delete().where('id',id)
     return res.json({
         'status':200,
-        'success':true
+        'success':true,
+        'message':'User has been deleted'
     })
 }
 

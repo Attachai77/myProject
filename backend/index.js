@@ -27,11 +27,11 @@ app.use(allowCrossDomain)
 
 app.use( (req,res,next)=>{
     console.log("start");
-    
     next()
 })
 
 app.use("/api",route)
+
 app.listen(8080,()=>{
     console.log("running...");
 })

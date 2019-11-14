@@ -5,6 +5,7 @@ const userRoute = require('./users')
 const authRoute = require('./auth')
 
 
+
 router.use('/auth', authRoute);
 router.use('/users', userRoute);
 
