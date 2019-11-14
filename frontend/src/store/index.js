@@ -18,9 +18,10 @@ export default new Vuex.Store({
     strict: debug,
 
     state: {
+        appName: 'BNK48',
         status: '',
         token: localStorage.getItem('token') || '',
-        user : {},
+        user : JSON.parse( localStorage.getItem('user') )  || '',
     },
     mutations: {
         auth_request(state){
@@ -49,6 +50,7 @@ export default new Vuex.Store({
                     const user = resp.data.user
                     
                     localStorage.setItem('token', token)
+                    localStorage.setItem('user', JSON.stringify(user) )
                     api.defaults.headers.common['token'] = token
                     commit('auth_success', { token, user } )
                     resolve(resp)
@@ -65,6 +67,7 @@ export default new Vuex.Store({
             return new Promise((resolve, reject) => {
                 commit('logout')
                 localStorage.removeItem('token')
+                localStorage.removeItem('user')
                 delete api.defaults.headers.common['token']
                 resolve()
             })
@@ -74,6 +77,9 @@ export default new Vuex.Store({
         isLoggedIn: state => !!state.token,
         authStatus: state => state.status,
         Auth: state => state.user,
+        appTitle (state) {
+            return state.appName
+        }
     }
 
 })

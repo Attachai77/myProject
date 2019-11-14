@@ -2,11 +2,12 @@
   <div id="app" class="container">
     
       <div>
+        {{ appName }}
         isLoggedIn : {{ isLoggedIn }}
-        <h5 v-if="isLoggedIn">Logged In with : {{ Auth.name }} </h5>
+        <h5 v-if="isLoggedIn">Logged In with : {{ Auth.fullname }} </h5>
         
-      <button v-if="isLoggedIn" v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
-      <router-link v-if="!isLoggedIn" to="/login" class="btn btn-sm btn-info">login</router-link>
+        <button v-if="isLoggedIn" v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
+        <router-link v-if="!isLoggedIn" to="/login" class="btn btn-sm btn-info">login</router-link>
       </div>
 
 
@@ -69,6 +70,9 @@ export default {
     },
     Auth: function() {
       return this.$store.getters.Auth;
+    },
+    appName() {
+      return this.$store.getters.appTitle
     }
   },
   beforeCreate() {
