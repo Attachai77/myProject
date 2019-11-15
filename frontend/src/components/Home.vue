@@ -6,7 +6,13 @@
 
 <script>
 export default {
-  name: 'Home Page'
+  name: 'home',
+
+  data() {
+      return {
+          msg: 'Home Page'
+      }
+  }
 }
 </script>
 

@@ -1,13 +1,11 @@
 const DB = require('../config/db')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const _ = require('lodash')
 
 exports.login = async (req,res) => {
     const { username , password } = req.body
-    // console.log(req.body);
-    
     const user  = await DB.from('users').select('*').where('username', username).first()
-
     if(!user){
         res.status(401)
         return res.json({
@@ -27,15 +25,7 @@ exports.login = async (req,res) => {
         })
     }
 
-    req.token = jwt.sign( {
-        userId: user.id
-    },
-    'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm'
-    ,{
-        // expiresIn:'1d'
-        expiresIn:'1d'
-    })
-
+    req.token = jwt.sign( { userId: user.id },  'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm',{    expiresIn:'1d'  })
     delete user.password
 
     res.json({
@@ -46,6 +36,47 @@ exports.login = async (req,res) => {
         user: {
             id: user.id,
             fullname: user.name
+        }
+    })
+}
+
+exports.register = async (req,res) => {
+    const {  firstname, lastname, username , password, email, birthdate , gendar , profile_img  } = req.body 
+    const user = await DB.from('users').select('*').where('username', username)
+    
+    if(!_.isEmpty(user)){
+        return res.json({
+            'success':false,
+            'status':200,
+            'message': 'Username already taken. '
+        })
+    }
+
+    const passwordNew = bcrypt.hashSync(password , 10)
+    const data = {
+        firstname,  lastname,    username,
+        password: passwordNew, email, 
+        gendar
+    }
+
+    if (birthdate) data.birthdate = birthdate
+    
+    let new_user
+    try {
+        new_user =  await DB.from('users').insert(data).returning('*')
+    } catch (error) {
+        throw error
+    }
+
+    const token = jwt.sign( { userId: new_user[0].id },  'UvFZNbUaEMUjTAFPwGAsQ8zwR8M2LrNm',{    expiresIn:'1d'  })
+    return res.json({
+        success:true,
+        status:200,
+        message:'Register success.',
+        token: token,
+        user: {
+            id: new_user[0].id,
+            fullname: new_user[0].firstname + " " + new_user[0].lastname
         }
     })
 }

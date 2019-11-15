@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
+import Welcome from "./components/Welcome.vue";
 import Login from "./components/Auth/login.vue";
+import Register from "./components/Auth/register.vue";
+import Home from "./components/Home.vue";
 import UsersList from "./components/Users/index.vue";
 import UsersView from "./components/Users/view.vue";
 import CreateUser from "./components/Users/create.vue";
@@ -14,11 +17,13 @@ Vue.use(Router);
 let router = new Router({
     mode: "history",
     routes: [
-        {   path: "/", name: "home", component: UsersList},
+        {   path: "/", name: "welcome", component: Welcome},
+        {   path: "/home", name: "home", component: Home,   meta: { requiresAuth: true} },
         {   path: '/login', name: 'login', component: Login,  meta: { guest: true }   },
-        {   path: "/users", name: "users-index",    component: UsersList,   /* meta: {  //     requiresAuth: true    } */   },
+        {   path: '/register', name: 'register', component: Register,  meta: { guest: true }   },
+        {   path: "/users", name: "users-index",    component: UsersList,  },
         {   path: "/users/create", name: "users-create",    component: CreateUser},
-        {   path: "/users/edit/:id",name: "users-edit",component: EditUser,props: true,   meta: { requiresAuth: true} }, /* Allow pass parameters */
+        {   path: "/users/edit/:id",name: "users-edit",component: EditUser, props: true,   meta: { requiresAuth: true} }, /* Allow pass parameters */
         {   path: "/users/view/:id",    name: "users-view", component: UsersView,   props: true,    meta: { requiresAuth: true}},
         {   path: "/validateDemo",   component: ValidateDemo    },
         {   path: '*', redirect: '/login' }
@@ -46,7 +51,7 @@ router.beforeEach((to, from, next) => {
             next()
         }
         else{
-            next({ name: 'users'})
+            next({ name: 'home'})
         }
 
     } else {

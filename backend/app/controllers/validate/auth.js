@@ -13,47 +13,35 @@ exports.ValidateLogin = () => (req, res, next) => {
         return res.json({
             status:200,
             message:"validate login form.",
-            errors: validate.validateError(error)
+            errors: validate.validateError(error),
+            success: false
         })
     }
 
     next()
 }
 
-// exports.validateUserForm = () => (req, res, next) => {
-//     const schema = Joi.object().keys({
-//         username: Joi.string().min(6).max(16).required(),
-//         password: Joi.string().min(8).max(20).required(),
-//         age: Joi.number().required(),
-//         email: Joi.string().email().required(),
-//     })
+exports.Register = () => (req, res, next) => {
+    const schema = Joi.object().keys({
+        firstname: Joi.string().min(6).max(16).required(),
+        lastname: Joi.string().min(6).max(16),
+        username: Joi.string().min(6).max(16).required(),
+        password: Joi.string().min(8).max(20).required(),
+        email: Joi.string().email(),
+        birthdate: Joi.date().allow(""),
+        gendar: Joi.string().max(1).allow(""),
+        profile_img: Joi.object().allow(""),
+    })
 
-//     const { error } = Joi.validate(req.body , schema)
-//     if (error) {
-//         return res.json({
-//             status:200,
-//             message: ' validate user form create',
-//             errors: validate.validateError(error)
-//         })
-//     }
+    const { error } = schema.validate(req.body);
+    if (error) {
+        return res.json({
+            status:200,
+            message:error.details[0].message,
+            errors: validate.validateError(error),
+            success: false
+        })
+    }
 
-//     next()
-// }
-
-// exports.validateUserFormUpdate = () => (req, res, next) => {
-//     const schema = Joi.object().keys({
-//         age: Joi.number().required(),
-//         email: Joi.string().email().required()
-//     })
-
-//     const { error } = Joi.validate(req.body, schema)
-//     if (error) {
-//         return res.json({
-//             status: 200,
-//             message: 'validate user form update',
-//             errors: validate.validateError(error)
-//         })
-//     }
-
-//     next()
-// }
+    next()
+}

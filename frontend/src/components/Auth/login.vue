@@ -28,6 +28,7 @@
                 </div>
             </div>
         </div>
+        <router-link  to="/register" class="btn btn-sm btn-outline-warning">regiter</router-link>
     </div>
 </template>
 
@@ -36,7 +37,7 @@
     import api from "../../http-common";
 
     export default {
-        name: "app",
+        name: "login",
         data() {
             return {
                 user: {
@@ -81,7 +82,7 @@
                       if(this.$route.params.nextUrl != null){
                           this.$router.push(this.$route.params.nextUrl)
                       }
-                      this.$router.push('users')
+                      this.$router.push('home')
 
                     
                   } )

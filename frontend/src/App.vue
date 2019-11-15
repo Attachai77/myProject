@@ -1,30 +1,28 @@
 <template>
   <div id="app" class="container">
     
-      <div>
+      <img alt="Vue logo" src="./assets/logo.png">
+
+      <div v-if="isLoggedIn">
         {{ appName }}
         isLoggedIn : {{ isLoggedIn }}
         <h5 v-if="isLoggedIn">Logged In with : {{ Auth.fullname }} </h5>
         
-        <button v-if="isLoggedIn" v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
-        <router-link v-if="!isLoggedIn" to="/login" class="btn btn-sm btn-info">login</router-link>
+        <button  v-on:click="logout" class="btn btn-sm btn-warning">logout</button>
       </div>
 
-
-    <img alt="Vue logo" src="./assets/logo.png">
-
-    <div>
-        <router-link class="btn btn-outline-primary" to="/">
-          <i class="fa fa-home"></i> Home
-        </router-link>
-        <router-link class="btn btn-outline-secondary" to="/users">
-          <vue-fontawesome icon="users" size="1" color="red"></vue-fontawesome> user list
-        </router-link>
-        <router-link class="btn btn-outline-success" to="/users/create">
-          <vue-fontawesome icon="plus"></vue-fontawesome> create user
-        </router-link>
-        <router-link class="btn btn-outline-danger" to="/validateDemo">Validate Demo</router-link>
-    </div><br>
+      <div v-if="isLoggedIn">
+          <router-link class="btn btn-outline-primary" to="/home">
+            <i class="fa fa-home"></i> Home
+          </router-link>
+          <router-link class="btn btn-outline-secondary" to="/users">
+            <vue-fontawesome icon="users" size="1" color="red"></vue-fontawesome> user list
+          </router-link>
+          <router-link class="btn btn-outline-success" to="/users/create">
+            <vue-fontawesome icon="plus"></vue-fontawesome> create user
+          </router-link>
+          <router-link class="btn btn-outline-danger" to="/validateDemo">Validate Demo</router-link>
+      </div><br>
 
     <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
       <router-view></router-view>
@@ -42,7 +40,7 @@ export default {
   name: 'app',
   // components: {
   //   HelloWorld
-  // }ม
+  // }
   data () {
       return {
           current_route: this.$router.currentRoute,
@@ -79,11 +77,12 @@ export default {
     //console.log('beforeCreate (App): Nothing gets called before me!')
   },
   created: function () {
-      // api.interceptors.response.use(function (response) {
-      //   return response
-      // }, function (err) {
-      //   console.log(err);
-      // });
+      api.interceptors.response.use(function (response) {
+        return response
+      }, function (err) {
+        console.log(err);
+        return err
+      });
   },
   beforeMount() {
     // console.log(`tbeforeMount (App): his.$el doesn't exist yet, but it will soon!`)
