@@ -29,9 +29,8 @@ exports.Register = () => (req, res, next) => {
         password: Joi.string().min(8).max(20).required(),
         email: Joi.string().email(),
         birthdate: Joi.date().allow(""),
-        gendar: Joi.string().max(1).allow(""),
-        profile_img: Joi.object().allow(""),
-    })
+        gendar: Joi.string().max(1).allow("")
+    }).unknown(true);
 
     const { error } = schema.validate(req.body);
     if (error) {

@@ -21,6 +21,7 @@
           <router-link class="btn btn-outline-success" to="/users/create">
             <vue-fontawesome icon="plus"></vue-fontawesome> create user
           </router-link>
+          <router-link class="btn btn-outline-warning" to="/profile">My Profile</router-link>
           <router-link class="btn btn-outline-danger" to="/validateDemo">Validate Demo</router-link>
       </div><br>
 
@@ -77,12 +78,44 @@ export default {
     //console.log('beforeCreate (App): Nothing gets called before me!')
   },
   created: function () {
-      api.interceptors.response.use(function (response) {
-        return response
-      }, function (err) {
-        console.log(err);
-        return err
-      });
+      // api.interceptors.response.use(function (response) {
+        
+      //   return response
+      // }, function (err) {
+        
+      //   // if (err.response.status == 401 && err.response.data.token_expired) {
+      //   //   this.$message({
+      //   //       message: err.response.data.message,
+      //   //       type: 'error',
+      //   //       position: 'top-right',
+      //   //   })
+      //   //   this.logout();
+      //   // }
+      //   return err
+        
+      // });
+
+    //   axiosInstance.interceptors.response.use(
+    //     response => {
+    //         console.log(response);
+    //         const tokens = {
+    //             token: response.headers['authorization'],
+    //             refreshToken: response.headers['refresh-token']
+    //         };
+    //         if (tokens.token && tokens.refreshToken) {
+    //             setTokens(JSON.stringify(tokens));
+    //         }
+    //         return response;
+    //     },
+    //     err => {
+    //         if (err.response.status === 401) {
+    //             EventBus.$emit('errors:401');
+    //         }
+    //         return Promise.reject(err);
+    //     }
+    // );
+    // return axiosInstance;
+
   },
   beforeMount() {
     // console.log(`tbeforeMount (App): his.$el doesn't exist yet, but it will soon!`)

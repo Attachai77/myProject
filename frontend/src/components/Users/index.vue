@@ -8,16 +8,18 @@
                 <th scope="col">#</th>
                 <th scope="col">Name</th>
                 <th scope="col">Username</th>
-                <th scope="col">Age</th>
+                <th scope="col">Birth Date</th>
+                <th scope="col">Gendar</th>
                 <th scope="col"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(user, index) in users" :key="user.id">
                     <th scope="row">{{ ++index }}</th>
-                    <td>{{ user.name }}</td>
+                    <td>{{ user.fullname }}</td>
                     <td>{{ user.username }}</td>
-                    <td>{{ user.age }}</td>
+                    <td>{{ user.birthdate }}</td>
+                    <td>{{ user.gendar }}</td>
                     <td>
                         <router-link class="btn btn-outline-warning" :to="{
                             name: 'users-view',
@@ -53,7 +55,7 @@ export default {
             api.get("/users")
                 .then(res => {
                     this.users = res.data.data; 
-                    // console.log(res)
+                    console.log(this.users)
                 })
                 .catch(e => {
                     // console.log(e);

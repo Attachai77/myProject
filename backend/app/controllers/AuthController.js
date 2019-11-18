@@ -41,8 +41,9 @@ exports.login = async (req,res) => {
 }
 
 exports.register = async (req,res) => {
-    const {  firstname, lastname, username , password, email, birthdate , gendar , profile_img  } = req.body 
+    const {  firstname, lastname, username , password, email, birthdate , gendar   } = req.body 
     const user = await DB.from('users').select('*').where('username', username)
+    // console.log(req.body );
     
     if(!_.isEmpty(user)){
         return res.json({

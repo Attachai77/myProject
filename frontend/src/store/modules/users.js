@@ -30,20 +30,14 @@ const getters = {
 }
   
 const actions = {
-    getUserById: ({ commit, state }, user_id) => {
-
-        api.get("/users/getUserById/"+user_id)
-            .then(res => {
-                commit('SET_USER', res.data.data)
-            })
-            .catch(e => {
-
-            });
-    },
-    // setName: ({ commit, state }, payload) => {
-    //     commit('SET_FIRST_NAME', payload.firstName)
-    //     commit('SET_LAST_NAME', payload.lastName)
-    // }
+    getUserById: async ({ commit, state }, user_id) => {
+        try {
+            const user = await api.get("/users/getUserById/"+user_id)
+            return user.data.data
+        } catch (error) {
+            return error
+        }
+    }
 }
   
 const mutations = {

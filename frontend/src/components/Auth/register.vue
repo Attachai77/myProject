@@ -40,13 +40,13 @@
                                 <label for="email">Email</label>
                                 <span v-if="!$v.user.email.required" class="invalid-feedback">Email is required</span>
                             </div>
-                            <div class="form-label-group text-left">
+                            <!-- <div class="form-label-group text-left">
                                 <input type="file" ref="image" id="profile_img" v-on:change="uploadProfileImg" class="form-control"  
                                 accept="image/*"
                                 :class="{ 'is-invalid': submitted && validImg }" placeholder="Image" >
                                 <label for="profile_img">Image</label>
                                 <span v-if="!validImg" class="invalid-feedback">Invalid image type</span>
-                            </div>
+                            </div> -->
                             <div class="form-group">
                                 <button class="btn btn-lg btn-primary btn-block text-uppercase">Register</button>
                             </div>
@@ -76,7 +76,7 @@
                     email: "",
                     birthdate: "",
                     gendar:"",
-                    profile_img:""
+                    // profile_img:""
                 },
                 submitted: false,
                 validImg: true
@@ -96,27 +96,25 @@
                 email: { email },
                 birthdate: {  },
                 gendar:{  },
-                profile_img:{  },
+                // profile_img:{  },
             }
         },
         methods: {
-            uploadProfileImg(e){
-              const files = this.$refs.image.files;
-              // console.log(files[0]);
-              const images_ext = ['image/png','image/jpg','image/jpeg','image/gif'];
-              const validaImg =  images_ext.includes("Mango");
-              if (validaImg) {
-                this.user.profile_img = files[0]
-              }else{
-                this.validImg = false
-                alert("Invalid image file")
-              }
+            // uploadProfileImg(e){
+            //   const files = this.$refs.image.files;
+            //   const images_ext = ['image/png','image/jpg','image/jpeg','image/gif'];
+            //   const validaImg =  images_ext.includes(files[0].type);
+            //   if (validaImg) {
+            //     this.user.profile_img = files[0]
+            //   }else{
+            //     this.validImg = false
+            //     alert("Invalid image file")
+            //     return false
+            //   }
               
-            },
+            // },
             handleSubmit(e) {
                 this.submitted = true;
-
-                console.log(this.user);
 
                 // stop here if form is invalid
                 this.$v.$touch();

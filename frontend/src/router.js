@@ -3,6 +3,7 @@ import Router from "vue-router";
 import Welcome from "./components/Welcome.vue";
 import Login from "./components/Auth/login.vue";
 import Register from "./components/Auth/register.vue";
+import Profile from "./components/Auth/profile.vue";
 import Home from "./components/Home.vue";
 import UsersList from "./components/Users/index.vue";
 import UsersView from "./components/Users/view.vue";
@@ -21,6 +22,7 @@ let router = new Router({
         {   path: "/home", name: "home", component: Home,   meta: { requiresAuth: true} },
         {   path: '/login', name: 'login', component: Login,  meta: { guest: true }   },
         {   path: '/register', name: 'register', component: Register,  meta: { guest: true }   },
+        {   path: '/profile', name: 'profile', component: Profile,   meta: { requiresAuth: true} },
         {   path: "/users", name: "users-index",    component: UsersList,  },
         {   path: "/users/create", name: "users-create",    component: CreateUser},
         {   path: "/users/edit/:id",name: "users-edit",component: EditUser, props: true,   meta: { requiresAuth: true} }, /* Allow pass parameters */

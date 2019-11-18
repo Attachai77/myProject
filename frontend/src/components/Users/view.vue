@@ -35,7 +35,6 @@ export default {
                 this.user = res.data.data; 
             })
             .catch(e => {
-                
                 if (e.response.data.status == 401) {
                     this.$message({
                         message: e.response.data.message,

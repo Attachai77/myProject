@@ -6,7 +6,9 @@ const Auth = require('./AuthController')
 
 exports.index = async (req,res) => {
 
-    const users = await DB.from('users').select('*')
+    const users = await DB.from('users')
+                    .select('id','firstname','lastname','username','birthdate','gendar','email',
+                    DB.raw("CONCAT(firstname, ' ', lastname) AS fullname ") )
     return res.json({
         'status':200,
         'data':users
