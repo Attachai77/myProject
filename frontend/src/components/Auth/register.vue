@@ -1,5 +1,5 @@
 <template>
-    <div class="jumbotron">
+    <div class="jumbotron" style="padding-top:5px;">
         <div class="container">
             <div class="row">
                 <div class="col-sm-4 offset-sm-4">
@@ -40,6 +40,9 @@
                                 <label for="email">Email</label>
                                 <span v-if="!$v.user.email.required" class="invalid-feedback">Email is required</span>
                             </div>
+                            <div class="form-label-group text-center">
+                                <datepicker input-class="datepicker" :language="th" name="birthdate" v-model="user.birthdate" ></datepicker>
+                            </div>
                             <!-- <div class="form-label-group text-left">
                                 <input type="file" ref="image" id="profile_img" v-on:change="uploadProfileImg" class="form-control"  
                                 accept="image/*"
@@ -60,13 +63,21 @@
 </template>
 
 <script>
+    import Datepicker from 'vuejs-datepicker';
+    import {en, es, th} from 'vuejs-datepicker/dist/locale'
     import { required , email , sameAs, minLength, maxLength,  } from "vuelidate/lib/validators";
     import api from "../../http-common";
 
     export default {
+        components: {
+          Datepicker
+        },
         name: "register",
         data() {
             return {
+                en: en,
+                es: es,
+                th: th,
                 user: {
                     firstname: "",
                     lastname: "",
@@ -167,6 +178,10 @@
 <style>
 label[for=username] , label[for=password]{
   cursor: text;
+}
+input.datepicker{
+  padding: 0px 0px 2px 25px;
+  width: 100%;
 }
 :root {
   --input-padding-x: 1.5rem;

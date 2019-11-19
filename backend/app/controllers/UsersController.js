@@ -9,6 +9,8 @@ exports.index = async (req,res) => {
     const users = await DB.from('users')
                     .select('id','firstname','lastname','username','birthdate','gendar','email',
                     DB.raw("CONCAT(firstname, ' ', lastname) AS fullname ") )
+    console.log(users);
+    
     return res.json({
         'status':200,
         'data':users
@@ -16,7 +18,7 @@ exports.index = async (req,res) => {
 }
 
 exports.createUser = async (req,res) => {
-    const { username , password ,name , age  } = req.body 
+    const { username , password   } = req.body 
     
     const user = await DB.from('users').select('*').where('username', username)
     
@@ -31,10 +33,8 @@ exports.createUser = async (req,res) => {
     const passwordNew = bcrypt.hashSync(password , 10)
     const data = {
         username,
-        password: passwordNew,
-        name
+        password: passwordNew
     }
-    if(age) data.age = age
     
     await DB.from('users').insert(data)
     return res.json({
@@ -44,11 +44,11 @@ exports.createUser = async (req,res) => {
 }
 
 exports.updateUser = async (req,res) => {
-    const {name , age  } = req.body 
+    const {firstname, lastname, email, gendar, birthdate } = req.body 
     const user_id = req.params.id
 
-    const data = { name }
-    if(age) data.age = age
+    const data = { firstname, lastname, email, gendar }
+    if(birthdate) data.birthdate = birthdate
 
     await DB.from('users').update(data).where('id' , user_id)
 

@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="container">
     
-      <img alt="Vue logo" src="./assets/logo.png">
+      <img alt="Vue logo" src="./assets/logo.png" style="height: 100px;">
 
       <div v-if="isLoggedIn">
         {{ appName }}
