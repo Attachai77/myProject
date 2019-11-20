@@ -1,10 +1,12 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const route = require('./app/route/route')
-const multer = require('multer');
-const upload = multer();
+
+
+// const upload = multer();
 const app = express()
 
+app.use(express.static('uploads'))
 
 app.use(bodyParser())
 
@@ -13,11 +15,11 @@ app.use(bodyParser.json());
 
 // for parsing application/xwww-
 app.use(bodyParser.urlencoded({ extended: true })); 
-//form-urlencoded
+// form-urlencoded
 
-// for parsing multipart/form-data
-app.use(upload.array()); 
-app.use(express.static('public'));
+// // for parsing multipart/form-data
+// app.use(upload.array()); 
+// app.use(express.static('public'));
 
 
 const allowCrossDomain = function(req, res, next) {
@@ -37,8 +39,9 @@ const allowCrossDomain = function(req, res, next) {
 }
 app.use(allowCrossDomain)
 
-app.use( (req,res,next)=>{
-    console.log("start");
+app.use((req,res,next)=>{
+    const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    console.log(fullUrl);
     next()
 })
 

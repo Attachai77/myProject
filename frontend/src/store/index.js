@@ -78,7 +78,11 @@ export default new Vuex.Store({
         register({commit}, data){
             return new Promise((resolve, reject) => {
                 commit('registerRequest')
-                api.post("/auth/register", data)
+                api.post("/auth/register", data,{
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                })
                 .then(resp => {
 
                     if (!resp.data.success) {

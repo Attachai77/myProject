@@ -18,7 +18,7 @@
                     <th scope="row">{{ ++index }}</th>
                     <td>{{ user.fullname }}</td>
                     <td>{{ user.username }}</td>
-                    <td>{{ user.birthdate }}</td>
+                    <td>{{ formatDate(user.birthdate) }}</td>
                     <td>{{ user.gendar }}</td>
                     <td>
                         <router-link class="btn btn-outline-warning" :to="{
@@ -42,6 +42,7 @@
 
 <script>
 import api from "../../http-common";
+import moment from 'moment'
 
 export default {
     name: "users-index",
@@ -85,6 +86,12 @@ export default {
                         this.$parent.logout();
                     }
                 });
+        },
+        formatDate(value){
+            if (value) {
+                return moment(String(value)).lang("th").format('DD MMMM YYYY')
+            }
+            return ""
         }
     },
     mounted() {

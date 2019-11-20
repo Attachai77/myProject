@@ -46,17 +46,6 @@
                 </div>
             </div>
 
-            <div class="form-group row"  :class="{ 'form-group--error': $v.user.age.$error }">
-                <label class="col-sm-4 col-form-label">Age</label>
-                <div class="col-sm-8">
-                    <input type="text" class="form-control" :class="{ 'is-invalid': $v.user.age.$error }" v-model.trim="$v.user.age.$model" placeholder="Age">
-                    <div v-if="!$v.user.age.between" class="invalid-feedback">
-                        Age must be between {{$v.user.age.$params.between.min}} and {{$v.user.age.$params.between.max}}
-                    </div>
-                    <div v-if="!$v.user.age.numeric" class="invalid-feedback">Age must be number</div>
-                </div>
-            </div>
-
             <div class="form-group row">
                 <div class="col-8 offset-4">
                     <button type="button" v-on:click="createUser" class="btn btn-primary">Create</button>

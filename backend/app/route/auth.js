@@ -7,4 +7,6 @@ router.post('/login', AuthController.login);
 router.post('/register',  AuthController.register);
 // router.post('/register', validate.Register(), AuthController.register);
 
+router.post('/upload', AuthController.uploadFile() );
+
 module.exports = router

@@ -43,13 +43,13 @@
                             <div class="form-label-group text-center">
                                 <datepicker input-class="datepicker" :language="th" name="birthdate" v-model="user.birthdate" ></datepicker>
                             </div>
-                            <!-- <div class="form-label-group text-left">
+                            <div class="form-label-group text-left">
                                 <input type="file" ref="image" id="profile_img" v-on:change="uploadProfileImg" class="form-control"  
                                 accept="image/*"
-                                :class="{ 'is-invalid': submitted && validImg }" placeholder="Image" >
+                                :class="{ 'is-invalid': submitted && !validImg }" placeholder="Image" >
                                 <label for="profile_img">Image</label>
                                 <span v-if="!validImg" class="invalid-feedback">Invalid image type</span>
-                            </div> -->
+                            </div>
                             <div class="form-group">
                                 <button class="btn btn-lg btn-primary btn-block text-uppercase">Register</button>
                             </div>
@@ -67,6 +67,7 @@
     import {en, es, th} from 'vuejs-datepicker/dist/locale'
     import { required , email , sameAs, minLength, maxLength,  } from "vuelidate/lib/validators";
     import api from "../../http-common";
+    import axios from "axios";
 
     export default {
         components: {
@@ -107,23 +108,41 @@
                 email: { email },
                 birthdate: {  },
                 gendar:{  },
-                // profile_img:{  },
+                profile_img:{  },
             }
         },
         methods: {
-            // uploadProfileImg(e){
-            //   const files = this.$refs.image.files;
-            //   const images_ext = ['image/png','image/jpg','image/jpeg','image/gif'];
-            //   const validaImg =  images_ext.includes(files[0].type);
-            //   if (validaImg) {
-            //     this.user.profile_img = files[0]
-            //   }else{
-            //     this.validImg = false
-            //     alert("Invalid image file")
-            //     return false
-            //   }
-              
-            // },
+            uploadProfileImg(e){
+              const files = this.$refs.image.files;
+              const images_ext = ['image/png','image/jpg','image/jpeg','image/gif'];
+              const validaImg =  images_ext.includes(files[0].type);
+              if (validaImg) {
+                const profile_img = files[0]
+                let formData = new FormData();
+                formData.append('name', "5555");
+                formData.append('file', profile_img);
+                console.log(formData);
+
+                axios.post( 'http://localhost:8080/api/upload',
+                  formData,
+                  {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                  }
+                ).then(function(){
+                  console.log('SUCCESS!!');
+                })
+                .catch(function(){
+                  console.log('FAILURE!!');
+                });
+
+              }else{
+                this.validImg = false
+                alert("Invalid image file")
+                return false
+              }
+            },
             handleSubmit(e) {
                 this.submitted = true;
 

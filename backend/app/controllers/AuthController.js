@@ -2,6 +2,9 @@ const DB = require('../config/db')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
+const multer  = require('multer');
+const path = require('path');
+const fs = require('fs');
 
 exports.login = async (req,res) => {
     const { username , password } = req.body
@@ -43,7 +46,7 @@ exports.login = async (req,res) => {
 exports.register = async (req,res) => {
     const {  firstname, lastname, username , password, email, birthdate , gendar   } = req.body 
     const user = await DB.from('users').select('*').where('username', username)
-    console.log(req.body );
+    
     
     if(!_.isEmpty(user)){
         return res.json({
@@ -97,4 +100,56 @@ exports.verifyToken = () => async (req , res , next ) => {
             next()
         }
     })
+}
+
+exports.uploadFile = () => async (req , res , next ) => {
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            // cb(null, 'uploads')
+            cb(null, './uploads/img')
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname) )
+        }
+    })
+
+    let upload = multer({ storage: storage, fileFilter: imageFilter }).single('file');
+
+    upload(req, res, function(err) {
+        // req.file contains information of uploaded file
+        // req.body contains information of text fields, if there were any
+
+        if (req.fileValidationError) {
+            return res.send(req.fileValidationError);
+        }
+        else if (!req.file) {
+            return res.send('Please select an image to upload');
+        }
+        else if (err instanceof multer.MulterError) {
+            return res.send(err);
+        }
+        else if (err) {
+            return res.send(err);
+        }
+
+        console.log(req.file);
+        
+        const baseUrl = req.protocol + '://' + req.get('host');
+        // Display uploaded image for user validation
+        // res.send(`You have uploaded this image: <hr/><img src="${baseUrl}/${req.file.path}" width="500"><hr /><a href="./">Upload another image</a>`);
+        res.send({
+            uploadSuccess: true, 
+            img_path: `${baseUrl}/img/${req.file.filename}`,
+            file: req.file
+        });
+    });
+}
+
+const imageFilter = function(req, file, cb) {
+    // Accept images only
+    if (!file.originalname.match(/\.(jpg|JPG|jpeg|JPEG|png|PNG|gif|GIF)$/)) {
+        req.fileValidationError = 'Only image files are allowed!';
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
 }
