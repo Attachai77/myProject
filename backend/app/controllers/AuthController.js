@@ -44,9 +44,53 @@ exports.login = async (req,res) => {
 }
 
 exports.register = async (req,res) => {
-    const {  firstname, lastname, username , password, email, birthdate , gendar   } = req.body 
-    const user = await DB.from('users').select('*').where('username', username)
+    let data;
+    const storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, './uploads/img')
+        },
+        filename: function (req, file, cb) {
+            cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname) )
+        }
+    })
+
+    let upload = multer({ storage: storage, fileFilter: imageFilter }).single('file');
+    // var upload = multer({ storage: storage }).fields([
+    //     { name: 'file', maxCount: 1 }, 
+    // ]);
+
+    let uploadImg = new Promise((resolve, reject)=>{
+        upload(req, res, function(err) {
+                // req.file contains information of uploaded file
+                // req.body contains information of text fields, if there were any
+                data = JSON.parse(req.body.data);
+
+                if (req.fileValidationError) {
+                    return res.send(req.fileValidationError);
+                }
+                else if (!req.file) {
+                    return res.send('Please select an image to upload');
+                }
+                else if (err instanceof multer.MulterError) {
+                    return res.send(err);
+                }
+                else if (err) {
+                    return res.send(err);
+                }
+                
+                const baseUrl = req.protocol + '://' + req.get('host');
+                data.img_path = `${baseUrl}/img/${req.file.filename}`
+                data.file = req.file
+                resolve(data)
+        });
+
+    })
+
+    req.body = await uploadImg;
+    // console.log(req.body );
     
+    const {  firstname, lastname, username , password, email, birthdate , gendar ,img_path   } = req.body 
+    const user = await DB.from('users').select('*').where('username', username)
     
     if(!_.isEmpty(user)){
         return res.json({
@@ -57,13 +101,14 @@ exports.register = async (req,res) => {
     }
 
     const passwordNew = bcrypt.hashSync(password , 10)
-    const data = {
+    data = {
         firstname,  lastname,    username,
         password: passwordNew, email, 
         gendar
     }
 
     if (birthdate) data.birthdate = birthdate
+    if (img_path) data.img_path = img_path
     
     let new_user
     try {
@@ -152,4 +197,51 @@ const imageFilter = function(req, file, cb) {
         return cb(new Error('Only image files are allowed!'), false);
     }
     cb(null, true);
+}
+
+const UploadImage = () => async (req , res , next ) => {
+    console.log("555555555555555555555");
+    
+    next()
+    // const storage = multer.diskStorage({
+    //     destination: function (req, file, cb) {
+    //         // cb(null, 'uploads')
+    //         cb(null, './uploads/img')
+    //     },
+    //     filename: function (req, file, cb) {
+    //         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname) )
+    //     }
+    // })
+
+    // let upload = multer({ storage: storage, fileFilter: imageFilter }).single('file');
+    
+
+    // upload(req, res, function(err) {
+    //     // req.file contains information of uploaded file
+    //     // req.body contains information of text fields, if there were any
+
+    //     if (req.fileValidationError) {
+    //         return res.send(req.fileValidationError);
+    //     }
+    //     else if (!req.file) {
+    //         return res.send('Please select an image to upload');
+    //     }
+    //     else if (err instanceof multer.MulterError) {
+    //         return res.send(err);
+    //     }
+    //     else if (err) {
+    //         return res.send(err);
+    //     }
+
+    //     console.log(req.file);
+        
+    //     const baseUrl = req.protocol + '://' + req.get('host');
+    //     // Display uploaded image for user validation
+    //     // res.send(`You have uploaded this image: <hr/><img src="${baseUrl}/${req.file.path}" width="500"><hr /><a href="./">Upload another image</a>`);
+    //     res.send({
+    //         uploadSuccess: true, 
+    //         img_path: `${baseUrl}/img/${req.file.filename}`,
+    //         file: req.file
+    //     });
+    // });
 }

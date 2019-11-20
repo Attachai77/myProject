@@ -5,7 +5,7 @@
                 <div class="col-12">
                     <div class="well profile">
                         <div class="col-sm-12">
-                            <img src="https://www.w3schools.com/howto/img_avatar.png" alt="" style="width:200px" class="img-circle img-responsive">
+                            <img :src="profile.img_path" alt="" style="width:200px" class="img-circle img-responsive">
                             <h2>{{ profile.firstname +" "+ profile.lastname }}</h2>
                             <p><strong>Email: </strong> {{ profile.email }} </p>
                             <p><strong>Birthdate: </strong> {{ profile.birthdate }} </p>
@@ -22,6 +22,7 @@
 
 <script>
 import api from "../../http-common";
+
 export default {
     data() {
         return {
@@ -52,8 +53,9 @@ export default {
     },
     async mounted() {
         await this.getAuthData();
-        console.log(this.profile);
-        
+        if (!this.profile.img_path) {
+            this.profile.img_path = "https://www.w3schools.com/howto/img_avatar.png"
+        }
     },
     beforeDestroy() {
 

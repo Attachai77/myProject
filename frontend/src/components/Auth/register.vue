@@ -41,7 +41,9 @@
                                 <span v-if="!$v.user.email.required" class="invalid-feedback">Email is required</span>
                             </div>
                             <div class="form-label-group text-center">
-                                <datepicker input-class="datepicker" :language="th" name="birthdate" v-model="user.birthdate" ></datepicker>
+                                <datepicker input-class="datepicker" :language="th" name="birthdate" v-model="user.birthdate" >
+                                  <label for="birthdate">birthdate</label>
+                                </datepicker>
                             </div>
                             <div class="form-label-group text-left">
                                 <input type="file" ref="image" id="profile_img" v-on:change="uploadProfileImg" class="form-control"  
@@ -109,34 +111,17 @@
                 birthdate: {  },
                 gendar:{  },
                 profile_img:{  },
-            }
+            },
+            validImg:false
         },
         methods: {
             uploadProfileImg(e){
               const files = this.$refs.image.files;
               const images_ext = ['image/png','image/jpg','image/jpeg','image/gif'];
-              const validaImg =  images_ext.includes(files[0].type);
-              if (validaImg) {
-                const profile_img = files[0]
-                let formData = new FormData();
-                formData.append('name', "5555");
-                formData.append('file', profile_img);
-                console.log(formData);
-
-                axios.post( 'http://localhost:8080/api/upload',
-                  formData,
-                  {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                  }
-                ).then(function(){
-                  console.log('SUCCESS!!');
-                })
-                .catch(function(){
-                  console.log('FAILURE!!');
-                });
-
+              const validateTypeImg =  images_ext.includes(files[0].type);
+              this.validImg = validateTypeImg
+              if (this.validImg) {
+                this.user.profile_img = files[0]
               }else{
                 this.validImg = false
                 alert("Invalid image file")
@@ -146,7 +131,7 @@
             handleSubmit(e) {
                 this.submitted = true;
 
-                // stop here if form is invalid
+                //# stop here if form is invalid
                 this.$v.$touch();
                 if (this.$v.$invalid) {
                     return;

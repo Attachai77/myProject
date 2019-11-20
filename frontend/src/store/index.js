@@ -76,13 +76,20 @@ export default new Vuex.Store({
             })
         },
         register({commit}, data){
+            
             return new Promise((resolve, reject) => {
                 commit('registerRequest')
-                api.post("/auth/register", data,{
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                })
+                // console.log(data.profile_img);
+                let formData = new FormData();
+                // for (var key in data) {
+                //     // console.log(key, data[key]);
+                //     formData.append(key, data[key]);
+                // }
+                formData.append('file', data.profile_img)
+                formData.append('data', JSON.stringify(data))
+                // formData.append('name', "name")
+                
+                api.post("/auth/register", formData)
                 .then(resp => {
 
                     if (!resp.data.success) {
@@ -105,7 +112,7 @@ export default new Vuex.Store({
                     localStorage.removeItem('token')
                     reject(err)
                 })
-            })
+            }) 
         },
 
         logout({ commit }) {
