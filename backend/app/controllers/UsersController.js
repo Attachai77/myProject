@@ -1,19 +1,33 @@
 const DB = require('../config/db')
 const bcrypt = require('bcrypt')
 const _ = require('lodash')
+const setupPaginator = require('knex-paginator');
+setupPaginator(DB);
 
 const Auth = require('./AuthController')
 
 exports.index = async (req,res) => {
+    console.log(req.query);
+    const current_page = req.query.current_page? req.query.current_page : 1
+    const per_page = req.query.per_page? req.query.per_page : 2
 
     const users = await DB.from('users')
-                    .select('id','firstname','lastname','username','birthdate','gendar','email',
-                    DB.raw("CONCAT(firstname, ' ', lastname) AS fullname ") )
-    console.log(users);
+        .select('id','firstname','lastname','username','birthdate','gendar','email', DB.raw("CONCAT(firstname, ' ', lastname) AS fullname ") )
+        .paginate(per_page, current_page, true)
+        // .then(paginator => {
+        //     console.log(paginator.current_page);
+        //     console.log(paginator.per_page);
+        //     console.log(paginator.total);
+        //     console.log(paginator.last_page);
+        //     console.log(paginator.data);
+        //     return paginator.data
+        // });
+
+    // console.log(users);
     
     return res.json({
-        'status':200,
-        'data':users
+        status:200,
+        data:users
     })
 }
 

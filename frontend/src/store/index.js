@@ -79,7 +79,6 @@ export default new Vuex.Store({
             
             return new Promise((resolve, reject) => {
                 commit('registerRequest')
-                // console.log(data.profile_img);
                 let formData = new FormData();
                 // for (var key in data) {
                 //     // console.log(key, data[key]);
@@ -87,7 +86,6 @@ export default new Vuex.Store({
                 // }
                 formData.append('file', data.profile_img)
                 formData.append('data', JSON.stringify(data))
-                // formData.append('name', "name")
                 
                 api.post("/auth/register", formData)
                 .then(resp => {

@@ -5,11 +5,13 @@ import store from './store'
 
 import Vuelidate from 'vuelidate'
 import Message from 'vue-m-message'
+import BootstrapVue from 'bootstrap-vue'
 
 import api from "./http-common";
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
 //import material-icon scss
 import "font-awesome/css/font-awesome.min.css";
 
@@ -22,6 +24,7 @@ if (token) api.defaults.headers.common['token'] = token
 
 Vue.use(Vuelidate)
 Vue.use(Message)
+Vue.use(BootstrapVue)
 
 //defined as global component
 Vue.component('VueFontawesome', require('vue-fontawesome-icon/src/components/VueFontawesome.vue').default);

@@ -15,7 +15,7 @@
             </thead>
             <tbody>
                 <tr v-for="(user, index) in users" :key="user.id">
-                    <th scope="row">{{ ++index }}</th>
+                    <th scope="row">{{ recordNumber(index) }}</th>
                     <td>{{ user.fullname }}</td>
                     <td>{{ user.username }}</td>
                     <td>{{ formatDate(user.birthdate) }}</td>
@@ -37,6 +37,13 @@
             </tbody>
         </table>
 
+        <p class="mt-3" align="left">Current Page: {{ paginator.current_page }}</p>
+
+        <div class="mt-3">
+            <b-pagination v-on:input="clickPage" v-model="paginator.current_page" for="table" :per-page="paginator.per_page" 
+            aria-controls="my-table" pills :total-rows="paginator.total" align="center"></b-pagination>
+        </div>
+
     </div>
 </template>
 
@@ -48,15 +55,33 @@ export default {
     name: "users-index",
     data() {
         return {
-            users: []
+            users: [],
+            paginator: {
+                total: '',
+                last_page: '',
+                per_page: 3,
+                current_page: 1,
+                from: '',
+                to: ''
+            }
         };
     },
     methods: {
         getAllUsers() {
-            api.get("/users")
+            const per_page = this.paginator.per_page
+            const current_page = this.paginator.current_page
+            api.get("/users?current_page="+current_page+"&per_page="+per_page)
                 .then(res => {
-                    this.users = res.data.data; 
-                    console.log(this.users)
+                    this.users = res.data.data.data; 
+                    this.paginator = {
+                        total: res.data.data.total,
+                        last_page: res.data.data.last_page,
+                        per_page: res.data.data.per_page,
+                        current_page: res.data.data.current_page,
+                        from: res.data.data.from,
+                        to: res.data.data.to
+                    }
+                    // console.log(this.users)
                 })
                 .catch(e => {
                     // console.log(e);
@@ -92,10 +117,22 @@ export default {
                 return moment(String(value)).lang("th").format('DD MMMM YYYY')
             }
             return ""
-        }
+        },
+        recordNumber(index){
+            return ((this.paginator.current_page - 1) * this.paginator.per_page ) + ( index + 1 )
+        },
+        clickPage(page){
+            this.paginator.current_page = page
+            this.getAllUsers()
+        },
     },
     mounted() {
         this.getAllUsers();
+    },
+    computed: {
+        rows() {
+            return 125
+        }
     }
 }
 </script>

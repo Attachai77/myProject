@@ -41,7 +41,7 @@ app.use(allowCrossDomain)
 
 app.use((req,res,next)=>{
     const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-    console.log(fullUrl);
+    // console.log(fullUrl);
     next()
 })
 
